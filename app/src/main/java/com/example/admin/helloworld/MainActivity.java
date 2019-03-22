@@ -21,8 +21,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.textView = (TextView) findViewById(R.id.abc);
-        String weatherId="CN101210903";
-        String weatherUrl="http://guolin.tech/api/weather?cityid=" + weatherId + "&key=6b50528f58fe40ab96f2f7b38423bbaa";
+        String weatherId="CN101030300";
+        String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=3c518527fd454c178453917e97642628";
         HttpUtil.sendOkHttpRequest(weatherUrl,new Callback(){
             @Override
             public void onFailure(Call call, IOException e) {
@@ -31,7 +31,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call,Response response) throws IOException {
                 final String responseText = response.body().string();
-                textView.setText(responseText);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        textView.setText(responseText);
+                    }
+                });
             }
 
         });
