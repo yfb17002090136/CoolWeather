@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".CountryActivity" />
-        <activity android:name=".WeatherActivity"></activity>
+        <activity android:name=".WeatherActivity" />
     </application>
 
 </manifest>

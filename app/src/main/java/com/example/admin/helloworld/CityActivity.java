@@ -36,7 +36,7 @@ public class CityActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent intent = getIntent();
-        int pid = intent.getIntExtra("pid", 0);
+        final int pid = intent.getIntExtra("pid", 0);
         Log.i("我们接收到了id", "" + pid);
         this.textView = (TextView) findViewById(R.id.abc);
         this.listView=(ListView)findViewById(R.id.listview);
@@ -48,7 +48,8 @@ public class CityActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i("点击了哪一个",""+position+":"+CityActivity.this.cids[position]+":"+CityActivity.this.data[position]);
                 Intent intent=new Intent(CityActivity.this,CountryActivity.class);
-                intent.putExtra("pid",CityActivity.this.cids[position]);
+                intent.putExtra("cid",CityActivity.this.cids[position]);
+                intent.putExtra("pid",pid);
                 startActivity(intent);
             }
         });

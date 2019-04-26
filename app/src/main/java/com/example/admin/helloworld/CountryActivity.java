@@ -22,7 +22,7 @@ import okhttp3.Response;
 
 public class CountryActivity extends AppCompatActivity {
 
-    private int[] dids = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    private String[] weatherids ={"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
     private String[] data = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
     private TextView textView;
     private ListView listView;
@@ -34,7 +34,8 @@ public class CountryActivity extends AppCompatActivity {
         this.textView=findViewById(R.id.textView);
 
         Intent intent=getIntent();
-        int pid = intent.getIntExtra("pid", 0);
+        final int cid = intent.getIntExtra("cid", 0);
+        final int pid = intent.getIntExtra("pid", 0);
         Log.i("我们接收到了id", "" + pid);
         this.textView = (TextView) findViewById(R.id.textView);
         this.listView=(ListView)findViewById(R.id.listview);
@@ -44,13 +45,15 @@ public class CountryActivity extends AppCompatActivity {
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("点击了哪一个",""+position+":"+CountryActivity.this.dids[position]+":"+CountryActivity.this.data[position]);
+                Log.i("点击了哪一个",""+position+":"+CountryActivity.this.weatherids[position]+":"+CountryActivity.this.data[position]);
                 Intent intent=new Intent(CountryActivity.this,WeatherActivity.class);
-                intent.putExtra("pid",CountryActivity.this.dids[position]);
+                intent.putExtra("weatherid",CountryActivity.this.weatherids[position]);
+                intent.putExtra("pid",pid);
+                intent.putExtra("cid",cid);
                 startActivity(intent);
             }
         });
-        String weatherUrl = "http://guolin.tech/api/china/" + pid;
+        String weatherUrl = "http://guolin.tech/api/china/" + pid+"/"+cid;
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -80,7 +83,7 @@ public class CountryActivity extends AppCompatActivity {
                 JSONObject jsonObject = null;
                 jsonObject = jsonArray.getJSONObject(i);
                 this.data[i] = jsonObject.getString("name");
-                this.dids[i] = jsonObject.getInt("id");
+                this.weatherids[i] =jsonObject.getString("weather_id");
             }
         } catch (JSONException e) {
             e.printStackTrace();
