@@ -2,6 +2,7 @@ package com.example.admin.helloworld;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ public class WeatherActivity extends AppCompatActivity {
         setContentView(R.layout.activity_weather);
         this.weahertextview=findViewById(R.id.weahertextview);
         String weaeherId=getIntent().getStringExtra("weatherid") ;
+        Log.i("我们接收到了id", "" + weaeherId);
         String weatherUrl="http://guolin.tech/api/weather?cityid="+weaeherId;
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
             @Override

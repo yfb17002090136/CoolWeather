@@ -27,7 +27,7 @@ import okhttp3.Response;
 public class CityActivity extends AppCompatActivity {
 
     private int[] cids = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    private String[] data = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
+    private  List<String> data=new ArrayList<>();
     private TextView textView;
     private ListView listView;
 
@@ -41,12 +41,12 @@ public class CityActivity extends AppCompatActivity {
         this.textView = (TextView) findViewById(R.id.abc);
         this.listView=(ListView)findViewById(R.id.listview);
 
-        ArrayAdapter<String> adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,data);
+        final ArrayAdapter<String> adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,data);
         listView.setAdapter(adapter);
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("点击了哪一个",""+position+":"+CityActivity.this.cids[position]+":"+CityActivity.this.data[position]);
+                Log.i("点击了哪一个",""+position+":"+CityActivity.this.cids[position]+":"+CityActivity.this.data.get(position));
                 Intent intent=new Intent(CityActivity.this,CountryActivity.class);
                 intent.putExtra("cid",CityActivity.this.cids[position]);
                 intent.putExtra("pid",pid);
@@ -68,6 +68,7 @@ public class CityActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         textView.setText(responseText);
+                        adapter.notifyDataSetChanged();
                     }
                 });
             }
@@ -76,13 +77,14 @@ public class CityActivity extends AppCompatActivity {
 
     private void parseJSONWithJSONObject(String responseText) {
         JSONArray jsonArray = null;
+        this.data.clear();
         try {
             jsonArray = new JSONArray(responseText);
             String[] result = new String[jsonArray.length()];
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = null;
                 jsonObject = jsonArray.getJSONObject(i);
-                this.data[i] = jsonObject.getString("name");
+                this.data.add(jsonObject.getString("name"));
                 this.cids[i] = jsonObject.getInt("id");
             }
         } catch (JSONException e) {
