@@ -28,12 +28,13 @@ public class ProvinceActivity extends AppCompatActivity {
 
     private List<String> data2=new ArrayList();
     private int[] cids = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
     private String currentlevel="province";
     private int pid=0;
+
     private int[] pids = new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     private  List<String> data=new ArrayList<>();
-    private TextView textView;
-    private Button button;
+//    private TextView textView;
     private ListView listview;
 
 
@@ -41,7 +42,7 @@ public class ProvinceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-        this.textView = (TextView)findViewById(R.id.textView);
+//        this.textView = (TextView)findViewById(R.id.textView);
         this.listview=(ListView)findViewById(R.id.listview);
 
         final ArrayAdapter<String> adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,data);
@@ -51,7 +52,7 @@ public class ProvinceActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i("点击了哪一个",""+position+":"+ProvinceActivity.this.pids[position]+":"+ProvinceActivity.this.data.get(position));
                 pid=ProvinceActivity.this.pids[position];
-                currentlevel="city";
+                currentlevel = "city";
                 getData(adapter);
 
 //                Intent intent=new Intent(ProvinceActivity.this,CityActivity.class);
@@ -67,8 +68,14 @@ public class ProvinceActivity extends AppCompatActivity {
     }
 
     private void getData(final ArrayAdapter<String> adapter){
-        String weatherUrl = currentlevel=="city"?"http://guolin.tech/api/china"+pid:"http://guolin.tech/api/china/";
+        String weatherUrl = currentlevel=="city"?"http://guolin.tech/api/china/"+pid:"http://guolin.tech/api/china";
         HttpUtil.sendOkHttpRequest(weatherUrl,new Callback(){
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
             @Override
             public void onResponse(Call call, Response response) throws IOException{
                 final String responseText = response.body().string();
@@ -77,15 +84,10 @@ public class ProvinceActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        textView.setText(responseText);
+//                        textView.setText(responseText);
                         adapter.notifyDataSetChanged();
                     }
                 });
-            }
-
-            @Override
-            public void onFailure(Call call, IOException e) {
-
             }
         });
     }
