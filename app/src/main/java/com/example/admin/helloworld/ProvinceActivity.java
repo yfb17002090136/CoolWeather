@@ -66,7 +66,7 @@ public class ProvinceActivity extends AppCompatActivity {
                     Intent intent=new Intent(ProvinceActivity.this,WeatherActivity.class);
                     intent.putExtra("weatherid",ProvinceActivity.this.weatherIds.get(position));
                     startActivity(intent);
-                }
+            }
 //                provinceId=ProvinceActivity.this.pids.get(position);
 //                currentlevel = CITY;
 //                getData(adapter);
